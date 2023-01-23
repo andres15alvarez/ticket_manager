@@ -33,6 +33,10 @@ func CreateApp() *App {
 		{
 			userTypeGroup.GET("", handlers.ListUserTypeHandler)
 		}
+		helpTopicGroup := v1.Group("/helptopic")
+		{
+			helpTopicGroup.GET("", handlers.ListHelpTopicHandler)
+		}
 	}
 	return app
 }
