@@ -15,20 +15,22 @@ var db *bun.DB
 var server *gin.Engine
 
 type Config struct {
-	DBUser     string
-	DBPassword string
-	DBHost     string
-	DBDatabase string
-	DBPort     string
+	Environment string
+	DBUser      string
+	DBPassword  string
+	DBHost      string
+	DBDatabase  string
+	DBPort      string
 }
 
 func InitializeConfig() *Config {
 	return &Config{
-		DBUser:     os.Getenv("DATABASE_USER"),
-		DBPassword: os.Getenv("DATABASE_PASSWORD"),
-		DBHost:     os.Getenv("DATABASE_HOST"),
-		DBDatabase: os.Getenv("DATABASE_NAME"),
-		DBPort:     os.Getenv("DATABASE_PORT"),
+		Environment: os.Getenv("ENVIRONMENT"),
+		DBUser:      os.Getenv("DATABASE_USER"),
+		DBPassword:  os.Getenv("DATABASE_PASSWORD"),
+		DBHost:      os.Getenv("DATABASE_HOST"),
+		DBDatabase:  os.Getenv("DATABASE_NAME"),
+		DBPort:      os.Getenv("DATABASE_PORT"),
 	}
 }
 
