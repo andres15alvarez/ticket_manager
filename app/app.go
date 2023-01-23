@@ -37,6 +37,10 @@ func CreateApp() *App {
 		{
 			helpTopicGroup.GET("", handlers.ListHelpTopicHandler)
 		}
+		departmentGroup := v1.Group("/department")
+		{
+			departmentGroup.GET("", handlers.ListDepartmentHandler)
+		}
 	}
 	return app
 }
