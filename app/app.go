@@ -41,6 +41,10 @@ func CreateApp() *App {
 		{
 			departmentGroup.GET("", handlers.ListDepartmentHandler)
 		}
+		stateGroup := v1.Group("/state")
+		{
+			stateGroup.GET("", handlers.ListStateHandler)
+		}
 	}
 	return app
 }
