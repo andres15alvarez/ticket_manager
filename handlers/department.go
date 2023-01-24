@@ -14,5 +14,9 @@ func ListDepartmentHandler(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 	}
-	c.JSON(http.StatusOK, departments)
+	if len(departments) == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "No departments found"})
+	} else {
+		c.JSON(http.StatusOK, departments)
+	}
 }

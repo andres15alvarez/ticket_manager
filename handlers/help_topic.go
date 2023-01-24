@@ -14,5 +14,9 @@ func ListHelpTopicHandler(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 	}
-	c.JSON(http.StatusOK, helpTopics)
+	if len(helpTopics) == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "No help topics found"})
+	} else {
+		c.JSON(http.StatusOK, helpTopics)
+	}
 }

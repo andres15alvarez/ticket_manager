@@ -14,5 +14,9 @@ func ListUserTypeHandler(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 	}
-	c.JSON(http.StatusOK, userTypes)
+	if len(userTypes) == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "No user types found"})
+	} else {
+		c.JSON(http.StatusOK, userTypes)
+	}
 }
