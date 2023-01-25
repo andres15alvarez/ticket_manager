@@ -45,6 +45,11 @@ func CreateApp() *App {
 		{
 			stateGroup.GET("", handlers.ListStateHandler)
 		}
+		userGroup := v1.Group("/user")
+		{
+			userGroup.GET("", handlers.ListUserHandler)
+			userGroup.GET("/:id", handlers.GetUserHandler)
+		}
 	}
 	return app
 }
