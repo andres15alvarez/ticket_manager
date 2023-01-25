@@ -13,9 +13,11 @@ func ListHelpTopicHandler(c *gin.Context) {
 	helpTopics, err := models.GetAllHelpTopics(db)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
 	}
 	if len(helpTopics) == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"error": "No help topics found"})
+		return
 	} else {
 		c.JSON(http.StatusOK, helpTopics)
 	}

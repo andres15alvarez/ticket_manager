@@ -13,9 +13,11 @@ func ListUserTypeHandler(c *gin.Context) {
 	userTypes, err := models.GetAllUserTypes(db)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
 	}
 	if len(userTypes) == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"error": "No user types found"})
+		return
 	} else {
 		c.JSON(http.StatusOK, userTypes)
 	}

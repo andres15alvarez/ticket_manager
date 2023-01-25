@@ -13,9 +13,11 @@ func ListStateHandler(c *gin.Context) {
 	states, err := models.GetAllStates(db)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
 	}
 	if len(states) == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"error": "No states found"})
+		return
 	} else {
 		c.JSON(http.StatusOK, states)
 	}
