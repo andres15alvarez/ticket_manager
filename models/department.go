@@ -8,7 +8,7 @@ import (
 
 type Department struct {
 	bun.BaseModel `bun:"table:department"`
-	ID            int64  `json:"id"`
+	ID            int64  `bun:",pk,autoincrement" json:"id"`
 	Name          string `json:"name"`
 }
 
