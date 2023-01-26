@@ -42,8 +42,8 @@ func GetTicketByID(db *bun.DB, id int64) (*Ticket, error) {
 		Relation("HelpTopic").
 		Relation("Department").
 		Relation("State").
-		Relation("CreatedByID").
-		Relation("TakenByID").
+		Relation("CreatedBy").
+		Relation("TakenBy").
 		Scan(context.Background())
 	if err != nil {
 		return nil, err
