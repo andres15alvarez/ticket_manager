@@ -1,6 +1,7 @@
 package models
 
 import (
+	"context"
 	"time"
 
 	"github.com/uptrace/bun"
@@ -8,29 +9,54 @@ import (
 
 type Ticket struct {
 	bun.BaseModel       `bun:"table:ticket"`
-	ID                  int64 `bun:",pk,autoincrement"`
-	CustomerName        string
-	CustomerEmail       string
-	CustomerPhoneNumber string
-	InvoiceNumber       string
-	WarantyNumber       string
-	Detail              string
-	InvoiceImage        string
-	WarantyCertificate  string
-	Subject             string
-	Answer              string
-	HelpTopicID         int64
-	HelpTopic           *HelpTopic `bun:"rel:belongs-to,join:help_topic_id=id"`
-	DepartmentId        int64
-	Department          *Department `bun:"rel:belongs-to,join:department_id=id"`
-	StateID             int64
-	State               *State `bun:"rel:belongs-to,join:state_id=id"`
-	CreatedByID         int64
-	CreatedBy           *User `bun:"rel:belongs-to,join:created_by_id=id"`
-	TakenByID           int64
-	TakenBy             *User     `bun:"rel:belongs-to,join:taken_by_id=id"`
-	TakenAt             time.Time `bun:",nullzero"`
-	CreatedAt           time.Time `bun:",nullzero,notnull,default:current_timestamp"`
-	UpdatedAt           time.Time `bun:",nullzero,notnull,default:current_timestamp"`
-	DeletedAt           time.Time `bun:",nullzero"`
+	ID                  int64       `bun:",pk,autoincrement" json:"id"`
+	CustomerName        string      `json:"customer_name"`
+	CustomerEmail       string      `json:"customer_email"`
+	CustomerPhoneNumber string      `json:"customer_phone_number"`
+	InvoiceNumber       string      `json:"invoice_number"`
+	WarantyNumber       string      `json:"waranty_number"`
+	Detail              string      `json:"detail"`
+	InvoiceImage        string      `json:"invoice_image"`
+	WarantyCertificate  string      `json:"waranty_certificate"`
+	Subject             string      `json:"subject"`
+	Answer              *string     `json:"answer"`
+	HelpTopicID         int64       `json:"help_topic_id"`
+	HelpTopic           *HelpTopic  `bun:"rel:belongs-to,join:help_topic_id=id" json:"help_topic"`
+	DepartmentId        int64       `json:"department_id"`
+	Department          *Department `bun:"rel:belongs-to,join:department_id=id" json:"department"`
+	StateID             int64       `json:"state_id"`
+	State               *State      `bun:"rel:belongs-to,join:state_id=id" json:"state"`
+	CreatedByID         int64       `json:"created_by_id"`
+	CreatedBy           *User       `bun:"rel:belongs-to,join:created_by_id=id" json:"created_by"`
+	TakenByID           *int64      `json:"taken_by_id"`
+	TakenBy             *User       `bun:"rel:belongs-to,join:taken_by_id=id" json:"taken_by"`
+	TakenAt             *time.Time  `bun:",nullzero" json:"taken_at"`
+	CreatedAt           time.Time   `bun:",nullzero,notnull,default:current_timestamp" json:"created_at"`
+	UpdatedAt           time.Time   `bun:",nullzero,notnull,default:current_timestamp" json:"updated_at"`
+	DeletedAt           *time.Time  `bun:",nullzero" json:"deleted_at"`
+}
+
+func GetTicketByID(db *bun.DB, id int64) (*Ticket, error) {
+	ticket := Ticket{}
+	err := db.NewSelect().Model(&ticket).Where("ticket.id = ?", id).
+		Relation("HelpTopic").
+		Relation("Department").
+		Relation("State").
+		Relation("CreatedByID").
+		Relation("TakenByID").
+		Scan(context.Background())
+	if err != nil {
+		return nil, err
+	}
+	return &ticket, nil
+}
+
+func CreateTicket(db *bun.DB, ticket *Ticket) (*Ticket, error) {
+	ticket.CreatedAt = time.Now()
+	ticket.UpdatedAt = time.Now()
+	_, err := db.NewInsert().Model(ticket).Exec(context.Background())
+	if err != nil {
+		return nil, err
+	}
+	return ticket, nil
 }
