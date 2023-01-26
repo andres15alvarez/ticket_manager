@@ -30,7 +30,7 @@ func GetTicketHandler(c *gin.Context) {
 
 }
 
-func CreateTicket(c *gin.Context) {
+func CreateTicketHandler(c *gin.Context) {
 	db := config.GetDB()
 	var ticket models.Ticket
 	if err := c.BindJSON(&ticket); err != nil {
@@ -43,4 +43,25 @@ func CreateTicket(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusCreated, ticketCreated)
+}
+
+func ListTicketHandler(c *gin.Context) {
+	db := config.GetDB()
+	var tickets []*models.Ticket
+	var err error
+	stateID, err := strconv.ParseInt(c.Query("state"), 10, 64)
+	if stateID == 0 {
+		tickets, err = models.GetAllTickets(db)
+	} else {
+		tickets, err = models.GetTicketsByState(db, stateID)
+	}
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	if len(tickets) == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Tickets not found"})
+		return
+	}
+	c.JSON(http.StatusOK, tickets)
 }
