@@ -1,15 +1,15 @@
 CREATE TABLE "user_type" (
-  "id" int PRIMARY KEY NOT NULL,
+  "id" SERIAL PRIMARY KEY NOT NULL,
   "name" varchar(255) NOT NULL
 );
 
 CREATE TABLE "user" (
-  "id" int PRIMARY KEY NOT NULL,
-  "username" varchar(255) NOT NULL,
+  "id" SERIAL PRIMARY KEY NOT NULL,
+  "username" varchar(255) NOT NULL UNIQUE,
   "password" varchar(255) NOT NULL,
   "first_name" varchar(100),
   "last_name" varchar(100),
-  "email" varchar(100) NOT NULL,
+  "email" varchar(100) NOT NULL UNIQUE,
   "user_type_id" int,
   "created_at" timestamp,
   "updated_at" timestamp,
@@ -17,22 +17,22 @@ CREATE TABLE "user" (
 );
 
 CREATE TABLE "help_topic" (
-  "id" int PRIMARY KEY NOT NULL,
+  "id" SERIAL PRIMARY KEY NOT NULL,
   "name" varchar(255) NOT NULL
 );
 
 CREATE TABLE "department" (
-  "id" int PRIMARY KEY NOT NULL,
+  "id" SERIAL PRIMARY KEY NOT NULL,
   "name" varchar(255) NOT NULL
 );
 
 CREATE TABLE "state" (
-  "id" int PRIMARY KEY NOT NULL,
+  "id" SERIAL PRIMARY KEY NOT NULL,
   "name" varchar(255) NOT NULL
 );
 
 CREATE TABLE "ticket" (
-  "id" int PRIMARY KEY NOT NULL,
+  "id" SERIAL PRIMARY KEY NOT NULL,
   "customer_name" varchar(255) NOT NULL,
   "customer_email" varchar(100) NOT NULL,
   "customer_phone_number" varchar(21) NOT NULL,
