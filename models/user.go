@@ -2,7 +2,6 @@ package models
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/andres15alvarez/ticket_manager/utils"
@@ -18,7 +17,7 @@ type User struct {
 	LastName      string     `json:"last_name"`
 	Email         string     `bun:",unique" json:"email"`
 	UserTypeID    int64      `json:"user_type_id"`
-	UserType      UserType   `bun:"rel:belongs-to,join:user_type_id=id" json:"user_type"`
+	UserType      *UserType  `bun:"rel:belongs-to,join:user_type_id=id" json:"user_type"`
 	CreatedAt     time.Time  `bun:",nullzero,notnull,default:current_timestamp" json:"created_at"`
 	UpdatedAt     time.Time  `bun:",nullzero,notnull,default:current_timestamp" json:"updated_at"`
 	DeletedAt     *time.Time `bun:",nullzero" json:"deleted_at"`
@@ -64,14 +63,9 @@ func CreateUser(db *bun.DB, user *User) (*User, error) {
 	user.Password = hashedPassword
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
-	res, err := db.NewInsert().Model(user).Exec(context.Background())
-	log.Printf("User Created: %v", res)
-	if err != nil {
-		return nil, err
+	_, insertError := db.NewInsert().Model(user).Exec(context.Background())
+	if insertError != nil {
+		return nil, insertError
 	}
-	userCreated, err := GetUserByEmail(db, user.Email)
-	if userCreated == nil {
-		return user, nil
-	}
-	return userCreated, nil
+	return user, nil
 }
