@@ -36,6 +36,39 @@ type Ticket struct {
 	DeletedAt           *time.Time  `bun:",nullzero" json:"deleted_at"`
 }
 
+func GetAllTickets(db *bun.DB) ([]*Ticket, error) {
+	var tickets []*Ticket
+	ticket := Ticket{}
+	err := db.NewSelect().Model(&ticket).
+		Relation("HelpTopic").
+		Relation("Department").
+		Relation("State").
+		Relation("CreatedBy").
+		Relation("TakenBy").
+		Scan(context.Background(), &tickets)
+	if err != nil {
+		return nil, err
+	}
+	return tickets, nil
+}
+
+func GetTicketsByState(db *bun.DB, stateID int64) ([]*Ticket, error) {
+	var tickets []*Ticket
+	ticket := Ticket{}
+	err := db.NewSelect().Model(&ticket).
+		Where("state_id = ?", stateID).
+		Relation("HelpTopic").
+		Relation("Department").
+		Relation("State").
+		Relation("CreatedBy").
+		Relation("TakenBy").
+		Scan(context.Background(), &tickets)
+	if err != nil {
+		return nil, err
+	}
+	return tickets, nil
+}
+
 func GetTicketByID(db *bun.DB, id int64) (*Ticket, error) {
 	ticket := Ticket{}
 	err := db.NewSelect().Model(&ticket).Where("ticket.id = ?", id).
