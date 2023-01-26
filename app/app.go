@@ -51,6 +51,11 @@ func CreateApp() *App {
 			userGroup.POST("", handlers.CreateUserHandler)
 			userGroup.GET("/:id", handlers.GetUserHandler)
 		}
+		ticketGroup := v1.Group("/ticket")
+		{
+			ticketGroup.POST("", handlers.CreateTicket)
+			ticketGroup.GET("/:id", handlers.GetTicketHandler)
+		}
 	}
 	return app
 }
