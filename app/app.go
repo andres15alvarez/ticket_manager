@@ -48,6 +48,7 @@ func CreateApp() *App {
 		userGroup := v1.Group("/user")
 		{
 			userGroup.GET("", handlers.ListUserHandler)
+			userGroup.POST("", handlers.CreateUserHandler)
 			userGroup.GET("/:id", handlers.GetUserHandler)
 		}
 	}
