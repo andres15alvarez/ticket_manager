@@ -16,12 +16,7 @@ func ListUserHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	if len(users) == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Users not found"})
-		return
-	} else {
-		c.JSON(http.StatusOK, users)
-	}
+	c.JSON(http.StatusOK, users)
 }
 
 func GetUserHandler(c *gin.Context) {
@@ -48,7 +43,7 @@ func GetUserHandler(c *gin.Context) {
 func CreateUserHandler(c *gin.Context) {
 	db := config.GetDB()
 	var user models.User
-	if err := c.BindJSON(&user); err != nil {
+	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

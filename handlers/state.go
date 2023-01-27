@@ -15,10 +15,5 @@ func ListStateHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
-	if len(states) == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"error": "No states found"})
-		return
-	} else {
-		c.JSON(http.StatusOK, states)
-	}
+	c.JSON(http.StatusOK, states)
 }

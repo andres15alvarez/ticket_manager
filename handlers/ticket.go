@@ -59,9 +59,5 @@ func ListTicketHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	if len(tickets) == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Tickets not found"})
-		return
-	}
 	c.JSON(http.StatusOK, tickets)
 }
