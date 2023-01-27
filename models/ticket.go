@@ -37,7 +37,7 @@ type Ticket struct {
 }
 
 func GetAllTickets(db *bun.DB) ([]*Ticket, error) {
-	var tickets []*Ticket
+	tickets := []*Ticket{}
 	ticket := Ticket{}
 	err := db.NewSelect().Model(&ticket).
 		Relation("HelpTopic").
@@ -53,7 +53,7 @@ func GetAllTickets(db *bun.DB) ([]*Ticket, error) {
 }
 
 func GetTicketsByState(db *bun.DB, stateID int64) ([]*Ticket, error) {
-	var tickets []*Ticket
+	var tickets = []*Ticket{}
 	ticket := Ticket{}
 	err := db.NewSelect().Model(&ticket).
 		Where("state_id = ?", stateID).

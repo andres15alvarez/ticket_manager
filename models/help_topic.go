@@ -13,7 +13,7 @@ type HelpTopic struct {
 }
 
 func GetAllHelpTopics(db *bun.DB) ([]*HelpTopic, error) {
-	var helpTopics []*HelpTopic
+	helpTopics := []*HelpTopic{}
 	helpTopic := HelpTopic{}
 	ctx := context.Background()
 	err := db.NewSelect().Model(&helpTopic).Scan(ctx, &helpTopics)

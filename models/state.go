@@ -13,7 +13,7 @@ type State struct {
 }
 
 func GetAllStates(db *bun.DB) ([]*State, error) {
-	var states []*State
+	states := []*State{}
 	state := State{}
 	err := db.NewSelect().Model(&state).Scan(context.Background(), &states)
 	if err != nil {

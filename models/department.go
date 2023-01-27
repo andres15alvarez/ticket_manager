@@ -13,7 +13,7 @@ type Department struct {
 }
 
 func GetAllDepartments(db *bun.DB) ([]*Department, error) {
-	var departments []*Department
+	departments := []*Department{}
 	department := Department{}
 	ctx := context.Background()
 	err := db.NewSelect().Model(&department).Scan(ctx, &departments)

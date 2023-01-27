@@ -13,7 +13,7 @@ type UserType struct {
 }
 
 func GetAllUserTypes(db *bun.DB) ([]*UserType, error) {
-	var userTypes []*UserType
+	userTypes := []*UserType{}
 	user := UserType{}
 	ctx := context.Background()
 	err := db.NewSelect().Model(&user).Scan(ctx, &userTypes)
