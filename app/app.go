@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/andres15alvarez/ticket_manager/config"
 	"github.com/andres15alvarez/ticket_manager/handlers"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/uptrace/bun"
 )
@@ -23,6 +24,7 @@ func CreateApp() *App {
 		DB:     config.GetDB(),
 		Server: InitializeServer(),
 	}
+	app.Server.Use(cors.Default())
 	v1 := app.Server.Group("/api")
 	{
 		homeGroup := v1.Group("/")
