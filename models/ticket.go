@@ -19,7 +19,6 @@ type Ticket struct {
 	InvoiceImage        string      `json:"invoice_image"`
 	WarantyCertificate  string      `json:"waranty_certificate"`
 	Subject             string      `json:"subject"`
-	Answer              *string     `json:"answer"`
 	HelpTopicID         int64       `json:"help_topic_id"`
 	HelpTopic           *HelpTopic  `bun:"rel:belongs-to,join:help_topic_id=id" json:"help_topic"`
 	DepartmentId        int64       `json:"department_id"`
@@ -28,9 +27,6 @@ type Ticket struct {
 	State               *State      `bun:"rel:belongs-to,join:state_id=id" json:"state"`
 	CreatedByID         int64       `json:"created_by_id"`
 	CreatedBy           *User       `bun:"rel:belongs-to,join:created_by_id=id" json:"created_by"`
-	TakenByID           *int64      `json:"taken_by_id"`
-	TakenBy             *User       `bun:"rel:belongs-to,join:taken_by_id=id" json:"taken_by"`
-	TakenAt             *time.Time  `bun:",nullzero" json:"taken_at"`
 	CreatedAt           time.Time   `bun:",nullzero,notnull,default:current_timestamp" json:"created_at"`
 	UpdatedAt           time.Time   `bun:",nullzero,notnull,default:current_timestamp" json:"updated_at"`
 	DeletedAt           *time.Time  `bun:",nullzero" json:"deleted_at"`
@@ -44,7 +40,6 @@ func GetAllTickets(db *bun.DB) ([]*Ticket, error) {
 		Relation("Department").
 		Relation("State").
 		Relation("CreatedBy").
-		Relation("TakenBy").
 		Scan(context.Background(), &tickets)
 	if err != nil {
 		return nil, err
@@ -61,7 +56,6 @@ func GetTicketsByState(db *bun.DB, stateID int64) ([]*Ticket, error) {
 		Relation("Department").
 		Relation("State").
 		Relation("CreatedBy").
-		Relation("TakenBy").
 		Scan(context.Background(), &tickets)
 	if err != nil {
 		return nil, err
@@ -76,7 +70,6 @@ func GetTicketByID(db *bun.DB, id int64) (*Ticket, error) {
 		Relation("Department").
 		Relation("State").
 		Relation("CreatedBy").
-		Relation("TakenBy").
 		Scan(context.Background())
 	if err != nil {
 		return nil, err
