@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/andres15alvarez/ticket_manager/constants"
+
 	"github.com/uptrace/bun"
 )
 
@@ -40,6 +42,7 @@ func GetAllTickets(db *bun.DB) ([]*Ticket, error) {
 		Relation("Department").
 		Relation("State").
 		Relation("CreatedBy").
+		Order("id").
 		Scan(context.Background(), &tickets)
 	if err != nil {
 		return nil, err
@@ -80,6 +83,7 @@ func GetTicketByID(db *bun.DB, id int64) (*Ticket, error) {
 func CreateTicket(db *bun.DB, ticket *Ticket) (*Ticket, error) {
 	ticket.CreatedAt = time.Now()
 	ticket.UpdatedAt = time.Now()
+	ticket.StateID = constants.Open
 	_, err := db.NewInsert().Model(ticket).Exec(context.Background())
 	if err != nil {
 		return nil, err
