@@ -1,6 +1,8 @@
 package utils
 
 const (
-	AdminTypeID = 1
-	UserTypeID  = 2
+	AdminTypeID int64 = 1
+	UserTypeID  int64 = 2
+	Open        int64 = 1
+	Closed      int64 = 2
 )

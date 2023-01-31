@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/andres15alvarez/ticket_manager/constants"
+	"github.com/andres15alvarez/ticket_manager/utils"
 
 	"github.com/uptrace/bun"
 )
@@ -83,7 +83,7 @@ func GetTicketByID(db *bun.DB, id int64) (*Ticket, error) {
 func CreateTicket(db *bun.DB, ticket *Ticket) (*Ticket, error) {
 	ticket.CreatedAt = time.Now()
 	ticket.UpdatedAt = time.Now()
-	ticket.StateID = constants.Open
+	ticket.StateID = utils.Open
 	_, err := db.NewInsert().Model(ticket).Exec(context.Background())
 	if err != nil {
 		return nil, err
